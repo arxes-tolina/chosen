@@ -65,6 +65,13 @@ class AbstractChosen
 
   results_option_build: (options) ->
     content = ''
+
+    @result_display_columns = 1
+    for data in @results_data
+      if this.include_option_in_results(data)
+        if data.labels.length > @result_display_columns
+          @result_display_columns = data.labels.length
+
     for data in @results_data
       if data.group
         content += this.result_add_group data
@@ -92,11 +99,15 @@ class AbstractChosen
     classes.push "group-option" if option.group_array_index?
     classes.push option.classes if option.classes != ""
 
-    option_el = document.createElement("li")
+    option_el = document.createElement("tr")
     option_el.className = classes.join(" ")
     option_el.style.cssText = option.style
     option_el.setAttribute("data-option-array-index", option.array_index)
-    option_el.innerHTML = option.search_text
+    innerHTML = ''
+    for i in [0...@result_display_columns] by 1
+      label = option.labels[i] || ''
+      innerHTML += '<td>' + label + '</td>'
+    option_el.innerHTML = innerHTML;
     option_el.title = option.title if option.title
 
     this.outerHTML(option_el)
@@ -109,9 +120,9 @@ class AbstractChosen
     classes.push "group-result"
     classes.push group.classes if group.classes
 
-    group_el = document.createElement("li")
+    group_el = document.createElement("tr")
     group_el.className = classes.join(" ")
-    group_el.innerHTML = group.search_text
+    group_el.innerHTML = '<td colspan="' + @result_display_columns + '">' + group.labels[0] + '</td>'
     group_el.title = group.title if group.title
 
     this.outerHTML(group_el)
@@ -166,6 +177,7 @@ class AbstractChosen
           results_group.active_options += 1
 
         option.search_text = if option.group then option.label else option.html
+        option.labels[0] = option.search_text
 
         unless option.group and not @group_search
           option.search_match = this.search_string_match(option.search_text, regex)
@@ -175,7 +187,7 @@ class AbstractChosen
             if searchText.length
               startpos = option.search_text.search zregex
               text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length)
-              option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              option.labels[0] = text.substr(0, startpos) + '<em>' + text.substr(startpos)
 
             results_group.group_match = true if results_group?
 
@@ -242,6 +254,67 @@ class AbstractChosen
 
   clipboard_event_checker: (evt) ->
     setTimeout (=> this.results_search()), 50
+
+  scrollbar_width: ->
+    inner = document.createElement 'p'
+    inner.style.width = "100%"
+    inner.style.height = "200px"
+ 
+    outer = document.createElement 'div'
+    outer.style.position = "absolute"
+    outer.style.top = "0px"
+    outer.style.left = "0px"
+    outer.style.visibility = "hidden"
+    outer.style.width = "200px"
+    outer.style.height = "150px"
+    outer.style.overflow = "hidden"
+    outer.appendChild inner
+ 
+    document.body.appendChild outer
+    w1 = inner.offsetWidth
+    outer.style.overflow = 'scroll'
+    w2 = inner.offsetWidth
+ 
+    if w1 == w2
+      w2 = outer.clientWidth
+ 
+    document.body.removeChild outer
+    return (w1 - w2)
+
+  dropdown_width: ->
+    container = document.createElement "div"
+    container.className = 'chosen-container chosen-container-' + (if @is_multiple then "multi" else "single")
+    container.style.position = 'absolute'
+    container.style.visibility = 'hidden'
+
+    drop = document.createElement "div"
+    drop.className = 'chosen-drop'
+    container.appendChild drop
+
+    scroller = document.createElement("div");
+    scroller.className = 'chosen-results-scroller';
+    drop.appendChild(scroller);
+
+    table = document.createElement "table"
+    table.className = 'chosen-results'
+
+    for data in @results_data
+      if this.include_option_in_results(data)
+        data.search_match = true
+
+    content = this.results_option_build()
+
+    table.innerHTML = content
+    scroller.appendChild table
+
+    document.body.appendChild container
+
+    dropdown_width = table.offsetWidth
+
+    if scroller.scrollHeight > scroller.clientHeight
+      dropdown_width += this.scrollbar_width()
+    document.body.removeChild container
+    return dropdown_width
 
   container_width: ->
     return if @options.width? then @options.width else "#{@form_field.offsetWidth}px"

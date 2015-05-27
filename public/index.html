@@ -6,10 +6,6 @@
   <link rel="stylesheet" href="docsupport/style.css">
   <link rel="stylesheet" href="docsupport/prism.css">
   <link rel="stylesheet" href="chosen.css">
-  <style type="text/css" media="all">
-    /* fix rtl for demo */
-    .chosen-rtl .chosen-drop { left: -9000px; }
-  </style>
 </head>
 <body>
   <form>
@@ -1207,6 +1203,46 @@
         </div>
       </div>
 
+      <h2><a name="multiple-option-labels" class="anchor" href="#multiple-option-labels">Multiple Option Labels</a></h2>
+      <div class="side-by-side clearfix">
+        <p>Notice the "data-labels" attribute.</p>
+        <pre><code class="language-markup">&lt;option value="United States"<strong> data-labels='["United States", "US"]'</strong>&gt;</code></pre>
+        <p></p>
+        <div>
+          <select data-placeholder="Choose a Country..." class="chosen-select" style="width:350px;" tabindex="2">
+            <option value=""></option>
+            <option value="United States" data-labels='["United States", "US", "USD"]'>United States</option>
+            <option value="United Kingdom" data-labels='["United Kingdom", "UK", "GBP"]'>United Kingdom</option>
+            <option value="Afghanistan">Afghanistan</option>
+            <option value="Aland Islands">Aland Islands</option>
+            <option value="Albania">Albania</option>
+            <option value="Algeria">Algeria</option>
+            <option value="American Samoa">American Samoa</option>
+            <option value="Andorra">Andorra</option>
+            <option value="Angola">Angola</option>
+            <option value="Anguilla">Anguilla</option>
+            <option value="Antarctica">Antarctica</option>
+            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Armenia">Armenia</option>
+            <option value="Aruba">Aruba</option>
+            <option value="Australia">Australia</option>
+            <option value="Austria">Austria</option>
+            <option value="Azerbaijan">Azerbaijan</option>
+            <option value="Bahamas">Bahamas</option>
+            <option value="Bahrain">Bahrain</option>
+            <option value="Bangladesh">Bangladesh</option>
+            <option value="Barbados">Barbados</option>
+            <option value="Belarus">Belarus</option>
+            <option value="Belgium">Belgium</option>
+            <option value="Belize">Belize</option>
+            <option value="Benin">Benin</option>
+            <option value="Bermuda">Bermuda</option>
+            <option value="more">puuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuush</option>
+          </select>
+        </div>
+      </div>
+
       <h2><a name="hide-search-on-single-select" class="anchor" href="#hide-search-on-single-select">Hide Search on Single Select</a></h2>
       <div class="side-by-side clearfix">
         <p>The disable_search_threshold option can be specified to hide the search input on single selects if there are fewer than (n) options.</p>
@@ -1292,36 +1328,6 @@
             <option>Sun Bear</option>
             <option>Polar Bear</option>
             <option>Spectacled Bear</option>
-          </select>
-        </div>
-      </div>
-
-      <h2><a name="right-to-left-support" class="anchor" href="#right-to-left-support">Right to Left Support</a></h2>
-      <div class="side-by-side clearfix">
-        <p>Chosen supports right to left select boxes too. just add <code class="language-javascript">"chosen-rtl"</code> in addition to <code class="language-javascript">"chosen-select"</code> to your select tags and you are good to go.</p>
-        <pre><code class="language-markup">&lt;select class="chosen-select <strong>chosen-rtl</strong>"&gt;</code></pre>
-        <div>
-          <em>Single right to left select</em>
-          <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" class="chosen-select chosen-rtl" tabindex="13">
-            <option value=""></option>
-            <option>American Black Bear</option>
-            <option>Asiatic Black Bear</option>
-            <option>Brown Bear</option>
-            <option>Giant Panda</option>
-            <option selected>Sloth Bear</option>
-            <option>Polar Bear</option>
-          </select>
-        </div>
-        <div>
-          <em>Multiple right to left select</em>
-          <select data-placeholder="Your Favorite Types of Bear" style="width:350px;" multiple class="chosen-select  chosen-rtl" tabindex="14">
-            <option value=""></option>
-            <option>American Black Bear</option>
-            <option>Asiatic Black Bear</option>
-            <option>Brown Bear</option>
-            <option>Giant Panda</option>
-            <option selected>Sloth Bear</option>
-            <option selected>Polar Bear</option>
           </select>
         </div>
       </div>

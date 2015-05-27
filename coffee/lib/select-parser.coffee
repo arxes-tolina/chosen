@@ -12,10 +12,12 @@ class SelectParser
 
   add_group: (group) ->
     group_position = @parsed.length
+    label = this.escapeExpression(group.label)
     @parsed.push
       array_index: group_position
       group: true
-      label: this.escapeExpression(group.label)
+      label: label,
+      labels: [label],
       title: group.title if group.title
       children: 0
       disabled: group.disabled,
@@ -27,12 +29,15 @@ class SelectParser
       if option.text != ""
         if group_position?
           @parsed[group_position].children += 1
+        label = option.innerHTML
+        labels = (JSON.parse(option.getAttribute("data-labels")) || [label]);
         @parsed.push
           array_index: @parsed.length
           options_index: @options_index
           value: option.value
           text: option.text
-          html: option.innerHTML
+          html: label,
+          labels: labels,
           title: option.title if option.title
           selected: option.selected
           disabled: if group_disabled is true then group_disabled else option.disabled

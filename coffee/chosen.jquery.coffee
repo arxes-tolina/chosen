@@ -249,18 +249,6 @@ class Chosen extends AbstractChosen
       @result_highlight = el
       @result_highlight.addClass "highlighted"
 
-      maxHeight = parseInt @search_results_scroller.css("maxHeight"), 10
-      visible_top = @search_results_scroller.scrollTop()
-      visible_bottom = maxHeight + visible_top
-
-      high_top = @result_highlight.position().top + @search_results_scroller.scrollTop()
-      high_bottom = high_top + @result_highlight.outerHeight()
-
-      if high_bottom >= visible_bottom
-        @search_results_scroller.scrollTop if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
-      else if high_top < visible_top
-        @search_results_scroller.scrollTop high_top
-
   result_clear_highlight: ->
     @result_highlight.removeClass "highlighted" if @result_highlight
     @result_highlight = null

@@ -192,6 +192,14 @@ class Chosen extends AbstractChosen
     offset = @container.offset()
     height = @container.height()
     width = @container.width()
+
+    documentWidth = $(document).width();
+    dropDownRightPos = offset.left + dropdown_width
+    isOutOfScreen = dropDownRightPos > documentWidth
+    
+    if(isOutOfScreen)
+      offset.left -= dropdown_width - width
+
     @container_imposter.css
       "position": "absolute"
       "top": (offset.top + height) + "px"
